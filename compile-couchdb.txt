@@ -1,0 +1,47 @@
+*************
+** Topic
+*************
+
+Compile CouchDB from source.
+
+*************
+** Notes
+*************
+
+These instructions have been executed and the resulting tar can be found
+in ops/environment/dependencies/couchdb/latest/couchdb-2.0.0.tar.gz.
+
+The compilation must be done on the os/arch where you intend to execute CouchDB.
+
+*************
+** Steps
+*************
+
+1. Install the gcc-c++ compiler.
+
+  $ sudo yum install -y gcc-c++ make
+
+2. Install other dependencies.
+
+  $ sudo yum install -y autoconf autoconf-archive automake \
+      curl-devel erlang-asn1 erlang-erts erlang-eunit \
+      erlang-os_mon erlang-xmerl help2man \
+      js-devel-1.8.5 libicu-devel libtool perl-Test-Harness
+
+3. Install Erlang.
+
+  $ sudo yum install -y epel-release erlang
+
+3. Download the CouchDB source code.
+
+  $ curl --silent -L http://mirror.dsrg.utoronto.ca/apache/couchdb/source/2.0.0/apache-couchdb-2.0.0.tar.gz | tar xz
+
+4. Compile CouchDB.
+
+  $ cd ./apache-couchdb-2.0.0
+  $ ./configure --disable-docs
+  $ make release
+
+5. Tar the directory.
+
+  $ tar czf ./couchdb-2.0.0.tar.gz ./rel/couchdb

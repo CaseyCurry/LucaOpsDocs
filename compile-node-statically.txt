@@ -1,0 +1,43 @@
+*************
+** Topic
+*************
+
+Compile NodeJS statically so that it can be put on an image without an OS.
+
+*************
+** Notes
+*************
+
+These instructions have been executed and the resulting binary can be found
+in ops/environment/dependencies/nodejs/latest/nodejs-6.9.5.
+
+The compilation must be done on the os/arch where you intend to execute NodeJS.
+
+*************
+** Steps
+*************
+
+1. Download the musl cross compiler.
+
+  $ mkdir ./musl
+  $ curl --silent -L https://bitbucket.org/GregorR/musl-cross/downloads/crossx86-x86_64-linux-musl-0.9.11.tar.xz | tar xJ -C ./musl
+
+2. Change environment variables to point to musl.
+
+  $ export CC=[cwd]/musl/x86_64-linux-musl/bin/x86_64-linux-musl-gcc
+  $ export CXX=[cwd]/musl/x86_64-linux-musl/bin/x86_64-linux-musl-g++
+
+3. Download NodeJS source.
+
+  $ curl --silent -L https://nodejs.org/dist/v6.9.5/node-v6.9.5.tar.gz | tar xz
+
+4. Compile NodeJS. This will take some time. The -j2 argument on the make
+   command instructs the compiler to use multiple processors. Change the number
+   to the available number of processors on the machine executing the
+   compilation.
+
+  $ cd ./node-v6.9.5
+  $ ./configure --fully-static --without-intl --without-npm --without-snapshot
+  $ make -j2
+
+The binary can found at ./out/Release/node.
